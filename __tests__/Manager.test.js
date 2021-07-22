@@ -33,3 +33,9 @@ test('get manager office number', () => {
 
     expect(manager.officeNumber).toBe('123-456-7890');
 });
+
+test('get manager role', () => {
+    const manager = new Manager('Test Employee','Test ID','Test Email');
+
+    expect(manager.getRole()).toBe('Manager');
+});
