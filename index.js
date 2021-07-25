@@ -122,27 +122,27 @@ function createTeamMember() {
           teamMembers.push(
             new Manager(memberName, memberId, memberEmail, officeNumber)
           );
-          continueSetup();
+          continueTeamSetup();
         });
       } else if (memberType === "Engineer") {
         inquirer.prompt(engineerQuestion).then(({ github }) => {
           teamMembers.push(
             new Engineer(memberName, memberId, memberEmail, github)
           );
-          continueSetup();
+          continueTeamSetup();
         });
       } else if (memberType === "Intern") {
         inquirer.prompt(internQuestion).then(({ school }) => {
           teamMembers.push(
             new Intern(memberName, memberId, memberEmail, school)
           );
-          continueSetup();
+          continueTeamSetup();
         });
       }
     });
 }
 
-function continueSetup() {
+function continueTeamSetup() {
   inquirer
     .prompt({
       type: "list",
