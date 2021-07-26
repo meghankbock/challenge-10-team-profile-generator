@@ -2,170 +2,101 @@ const inquirer = require("inquirer");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const questions = require("./src/questions");
+const generateTemplate = require("./src/generateTemplate");
+const fs = require("fs");
 
 let teamMembers = [];
 
-const initialQuestions = [
-  {
-    type: "input",
-    name: "name",
-    message: "What is the name of the Team Member? (required)",
-    validate: (nameInput) => {
-      if (nameInput) {
-        return true;
-      } else {
-        console.log("Please enter the Team Member's name.");
-        return false;
-      }
-    },
-  },
-  {
-    type: "input",
-    name: "id",
-    message: "What is the Team Member's ID? (required)",
-    validate: (emailInput) => {
-      if (emailInput) {
-        return true;
-      } else {
-        console.log("Please enter the Team Member's ID.");
-        return false;
-      }
-    },
-  },
-  {
-    type: "input",
-    name: "email",
-    message: "What is the Team Member's email address? (required)",
-    validate: (emailInput) => {
-      if (emailInput) {
-        return true;
-      } else {
-        console.log("Please enter the Team Member's email address.");
-        return false;
-      }
-    },
-  },
-  {
-    type: "list",
-    name: "employeeType",
-    message: "What type of employee do you want to add to your Team?",
-    choices: ["Manager", "Engineer", "Intern"],
-    validate: (typeInput) => {
-      if (typeInput) {
-        return true;
-      } else {
-        console.log("Please enter the Team Member's employee type.");
-        return false;
-      }
-    },
-  },
-];
-
-const managerQuestion = [
-  {
-    type: "input",
-    name: "officeNumber",
-    message: "What is the Manager's office number? (required)",
-    validate: (phoneInput) => {
-      if (phoneInput) {
-        return true;
-      } else {
-        console.log("Please enter the Manager's office number.");
-        return false;
-      }
-    },
-  },
-];
-
-const engineerQuestion = [
-  {
-    type: "input",
-    name: "github",
-    message: "What is the Engineer's github? (required)",
-    validate: (githubInput) => {
-      if (githubInput) {
-        return true;
-      } else {
-        console.log("Please enter the Engineer's github.");
-        return false;
-      }
-    },
-  },
-];
-
-const internQuestion = [
-  {
-    type: "input",
-    name: "school",
-    message: "What is the Intern's school? (required)",
-    validate: (schoolInput) => {
-      if (schoolInput) {
-        return true;
-      } else {
-        console.log("Please enter the Intern's school.");
-        return false;
-      }
-    },
-  },
-];
-
-function createTeamMember() {
-  inquirer
-    .prompt(initialQuestions)
-    .then((userInput) => {
-      let memberName = userInput.name;
-      let memberId = userInput.id;
-      let memberEmail = userInput.email;
-      let memberType = userInput.employeeType;
-      if (memberType === "Manager") {
-        inquirer.prompt(managerQuestion).then(({ officeNumber }) => {
-          teamMembers.push(
-            new Manager(memberName, memberId, memberEmail, officeNumber)
-          );
-          continueTeamSetup();
-        });
-      } else if (memberType === "Engineer") {
-        inquirer.prompt(engineerQuestion).then(({ github }) => {
-          teamMembers.push(
-            new Engineer(memberName, memberId, memberEmail, github)
-          );
-          continueTeamSetup();
-        });
-      } else if (memberType === "Intern") {
-        inquirer.prompt(internQuestion).then(({ school }) => {
-          teamMembers.push(
-            new Intern(memberName, memberId, memberEmail, school)
-          );
-          continueTeamSetup();
-        });
-      }
-    });
+function createTeam(flag) {
+  console.log("flag: " + flag);
+  let action = "";
+  if (flag === true) {
+    console.log("flag = true");
+    inquirer
+      .prompt(questions("manager"))
+      .then((managerInput) => {
+        teamMembers.push(
+          new Manager(
+            managerInput.name,
+            managerInput.id,
+            managerInput.email,
+            managerInput.officeNumber
+          )
+        );
+      })
+      .then(() => {
+        return menuPrompt();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else if (flag === false) {
+    console.log("flag = false");
+    return menuPrompt();
+  }
 }
 
-function continueTeamSetup() {
-  inquirer
-    .prompt({
-      type: "list",
-      name: "addMore",
-      message: "Would you like to add another Team Member?",
-      choices: ["Yes", "No"],
-      validate: (continueInput) => {
-        if (continueInput) {
-          return true;
-        } else {
-          console.log("Please select Yes or No.");
-          return false;
-        }
-      },
-    })
-    .then(({ addMore }) => {
-      if (addMore === "Yes") {
-        createTeamMember();
-      } else {
-        console.log(teamMembers);
+function menuPrompt() {
+  return inquirer.prompt(questions("menu")).then((menuInput) => {
+    menuHandler(menuInput.action);
+  });
+}
+
+function menuHandler(action) {
+  if (action === "1 - Add an engineer") {
+    return inquirer.prompt(questions("engineer")).then((engineerInput) => {
+      teamMembers.push(
+        new Engineer(
+          engineerInput.name,
+          engineerInput.id,
+          engineerInput.email,
+          engineerInput.github
+        )
+      );
+      return createTeam(false);
+    });
+  } else if (action === "2 - Add an intern") {
+    return inquirer.prompt(questions("intern")).then((internInput) => {
+      teamMembers.push(
+        new Intern(
+          internInput.name,
+          internInput.id,
+          internInput.email,
+          internInput.school
+        )
+      );
+      return createTeam(false);
+    });
+  } else if (action === "3 - Finish building my team") {
+    return buildTemplate(teamMembers);
+  }
+}
+
+function buildTemplate(teamMembers) {
+  console.log("buildtemplate");
+  return new Promise((resolve, reject) => {
+    generateTemplate((teamMembers) => {
+      console.log("generatetemplate");
+    }).then((htmlTemplate) => {
+      return writeToFile(htmlTemplate);
+    });
+  });
+}
+
+function writeToFile(htmlFile) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile("./dist/my-team.html", htmlFile, (err) => {
+      if (err) {
+        reject(err);
         return;
       }
+      resolve({
+        ok: true,
+        message: "File created!",
+      });
     });
+  });
 }
 
-createTeamMember();
+createTeam(true);
