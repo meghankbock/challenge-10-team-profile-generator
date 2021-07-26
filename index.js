@@ -13,7 +13,7 @@ function createTeam(flag) {
   let action = "";
   if (flag === true) {
     console.log("flag = true");
-    inquirer
+    return inquirer
       .prompt(questions("manager"))
       .then((managerInput) => {
         teamMembers.push(
@@ -24,6 +24,7 @@ function createTeam(flag) {
             managerInput.officeNumber
           )
         );
+        console.log("team members: " + teamMembers);
       })
       .then(() => {
         return menuPrompt();
@@ -54,6 +55,7 @@ function menuHandler(action) {
           engineerInput.github
         )
       );
+      console.log("team members: " + teamMembers);
       return createTeam(false);
     });
   } else if (action === "2 - Add an intern") {
@@ -66,23 +68,27 @@ function menuHandler(action) {
           internInput.school
         )
       );
+      console.log("team members: " + teamMembers);
       return createTeam(false);
     });
   } else if (action === "3 - Finish building my team") {
-    return buildTemplate(teamMembers);
+    console.log("team members: " + teamMembers);
+    buildTemplate(teamMembers);
+    return;
   }
 }
 
 function buildTemplate(teamMembers) {
-  console.log("buildtemplate");
   return new Promise((resolve, reject) => {
-    generateTemplate((teamMembers) => {
-      console.log("generatetemplate");
-    }).then((htmlTemplate) => {
+    console.log("build template - team members: " + teamMembers);
+    generateTemplate(teamMembers)
+  })
+    .then((htmlTemplate) => {
       return writeToFile(htmlTemplate);
+    }).catch((err) => {
+      console.log(err);
     });
-  });
-}
+  };
 
 function writeToFile(htmlFile) {
   return new Promise((resolve, reject) => {
@@ -99,4 +105,5 @@ function writeToFile(htmlFile) {
   });
 }
 
+console.log("team members: " + teamMembers);
 createTeam(true);

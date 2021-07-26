@@ -1,34 +1,39 @@
-function renderTeamMembers(templateData) {
+const Manager = require("../lib/Manager");
+const Engineer = require("../lib/Engineer");
+const Intern = require("../lib/Intern");
+
+const renderTeamMembers = function(templateData) {
+    console.log("template data: " + templateData);
     let teamSection = '';
     templateData.forEach(member => {
-        if(member.role === 'Manager') {
+        if(member instanceof Manager) {
             teamSection += `<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-            <div id="name" class="card-header">${member.name}</div>
-            <div id="role" class="card-title"><h5>${member.role}</h5></div>
+            <div id="name" class="card-header">${member.getName()}</div>
+            <div id="role" class="card-title"><h5>${member.getRole()}</h5></div>
             <div class="card-body bg-light">
-              <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.id}</p>
-              <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.email}">${member.email}</a></p>
-              <p id="other" class="card-text bg-light border-light text-dark">${member.officeNumber}</p>
+              <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.getId()}</p>
+              <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
+              <p id="other" class="card-text bg-light border-light text-dark">${member.getOfficeNumber()}</p>
             </div>
           </div>`;
-        } else if(member.role === 'Engineer') {
+        } else if(member instanceof Engineer) {
             teamSection += `<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-            <div id="name" class="card-header">${member.name}</div>
-            <div id="role" class="card-title"><h5>${member.role}</h5></div>
+            <div id="name" class="card-header">${member.getName()}</div>
+            <div id="role" class="card-title"><h5>${member.getRole()}</h5></div>
             <div class="card-body bg-light">
-            <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.id}</p>
-            <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.email}">${member.email}</a></p>
-              <p id="other" class="card-text bg-light border-light text-dark">Github: <a href="https://github.com/${member.github}">${member.github}</p>
+            <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.getId()}</p>
+            <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
+              <p id="other" class="card-text bg-light border-light text-dark">Github: <a href="https://github.com/${member.getGithub()}">${member.getGithub()}</p>
             </div>
           </div>`;
-        } else if(member.role === 'Intern') {
+        } else if(member instanceof Intern) {
             teamSection += `<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-            <div id="name" class="card-header">${member.name}</div>
-            <div id="role" class="card-title"><h5>${member.role}</h5></div>
+            <div id="name" class="card-header">${member.getName()}</div>
+            <div id="role" class="card-title"><h5>${member.getRole()}</h5></div>
             <div class="card-body bg-light">
-            <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.id}</p>
-            <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.email}">${member.email}</a></p>
-              <p id="other" class="card-text bg-light border-light text-dark">School: ${member.school}</p>
+            <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.getId()}</p>
+            <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
+              <p id="other" class="card-text bg-light border-light text-dark">School: ${member.getSchool()}</p>
             </div>
           </div>`;
         }
@@ -36,9 +41,15 @@ function renderTeamMembers(templateData) {
     return teamSection;
 }
 
-const generateTemplate = (templateData) => {
-    console.log("template data: " + templateData);
-    return `
+const generateTemplate = templateData => {
+    const {
+        name,
+        id,
+        email,
+        ...other
+      } = templateData;
+      let htmlTemplate = '';
+    htmlTemplate = `
   <!DOCTYPE html> 
   <html lang="en"> 
   <head>
@@ -61,7 +72,9 @@ const generateTemplate = (templateData) => {
     <section id=team-members>${renderTeamMembers(templateData)}</section>
   </body>
   </html>
-  `
+  `;
+  console.log("html template: " + htmlTemplate);
+  return htmlTemplate;
 }
 
 module.exports = generateTemplate;
