@@ -7,30 +7,34 @@ const renderTeamMembers = function(templateData) {
     let teamSection = '';
     templateData.forEach(member => {
         if(member instanceof Manager) {
-            teamSection += `<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-            <div id="name" class="card-header">${member.getName()}</div>
-            <div id="role" class="card-title"><h5>${member.getRole()}</h5></div>
-            <div class="card-body bg-light">
-              <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.getId()}</p>
-              <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
-              <p id="other" class="card-text bg-light border-light text-dark">${member.getOfficeNumber()}</p>
+            teamSection += 
+          `<div class="card text-white m-3 p-0 col-3" style="max-width: 20rem;">
+            <div id="name" class="card-title mb-0 p-3 bg-primary"><h5>${member.getName()}</h5>
+            <span id="role">${member.getRole()}</span>
+            </div>
+            <div class="card-body mb-0 p-3 bg-light border-light">
+              <p id="id" class="card-text mb-0 p-2 bg-white border-light text-dark">ID: ${member.getId()}</p>
+              <p id="email" class="card-text mb-0 p-2 bg-white border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
+              <p id="other" class="card-text mb-0 p-2 bg-white border-light text-dark">Office Number: ${member.getOfficeNumber()}</p>
             </div>
           </div>`;
         } else if(member instanceof Engineer) {
-            teamSection += `<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-            <div id="name" class="card-header">${member.getName()}</div>
-            <div id="role" class="card-title"><h5>${member.getRole()}</h5></div>
+            teamSection += `<div class="card text-white bg-primary m-3 col-md-3" style="max-width: 18rem;">
+            <div id="name" class="card-title"><h5>${member.getName()}</h5>
+            <span id="role">${member.getRole()}</span>
+            </div>
             <div class="card-body bg-light">
             <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.getId()}</p>
             <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
-              <p id="other" class="card-text bg-light border-light text-dark">Github: <a href="https://github.com/${member.getGithub()}">${member.getGithub()}</p>
+              <p id="other" class="card-text bg-light border-light text-dark">Github: <a href="https://github.com/${member.getGithub()}">${member.getGithub()}</a></p>
             </div>
           </div>`;
         } else if(member instanceof Intern) {
-            teamSection += `<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-            <div id="name" class="card-header">${member.getName()}</div>
-            <div id="role" class="card-title"><h5>${member.getRole()}</h5></div>
-            <div class="card-body bg-light">
+            teamSection += `<div class="card text-white bg-primary m-3 col-md-3" style="max-width: 18rem;">
+            <div id="name" class="card-title"><h5>${member.getName()}</h5>
+            <span id="role">${member.getRole()}</span>
+            </div>
+            <div class="card-body bg-light>
             <p id="id" class="card-text bg-light border-light text-dark">ID: ${member.getId()}</p>
             <p id="email" class="card-text bg-light border-light text-dark">Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
               <p id="other" class="card-text bg-light border-light text-dark">School: ${member.getSchool()}</p>
@@ -69,7 +73,7 @@ const generateTemplate = templateData => {
 
   <body>
     <h1>My Team</h1>
-    <section id=team-members>${renderTeamMembers(templateData)}</section>
+    <section id=team-members class="row d-flex justify-content-center">${renderTeamMembers(templateData)}</section>
   </body>
   </html>
   `;

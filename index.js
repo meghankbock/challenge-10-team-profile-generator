@@ -8,12 +8,16 @@ const fs = require("fs");
 
 let teamMembers = [];
 
-function createTeam(flag) {
-  console.log("flag: " + flag);
-  let action = "";
+const createTeam = (flag) => {
   if (flag === true) {
-    console.log("flag = true");
-    return inquirer
+    return managerPrompt();
+  } else if (flag === false) {
+    return menuPrompt();
+  }
+};
+
+const managerPrompt = () => {
+  return inquirer
       .prompt(questions("manager"))
       .then((managerInput) => {
         teamMembers.push(
@@ -24,7 +28,6 @@ function createTeam(flag) {
             managerInput.officeNumber
           )
         );
-        console.log("team members: " + teamMembers);
       })
       .then(() => {
         return menuPrompt();
@@ -32,19 +35,15 @@ function createTeam(flag) {
       .catch((err) => {
         console.log(err);
       });
-  } else if (flag === false) {
-    console.log("flag = false");
-    return menuPrompt();
-  }
 }
 
-function menuPrompt() {
+const menuPrompt = () => {
   return inquirer.prompt(questions("menu")).then((menuInput) => {
     menuHandler(menuInput.action);
   });
 }
 
-function menuHandler(action) {
+const menuHandler = (action) => {
   if (action === "1 - Add an engineer") {
     return inquirer.prompt(questions("engineer")).then((engineerInput) => {
       teamMembers.push(
@@ -55,9 +54,11 @@ function menuHandler(action) {
           engineerInput.github
         )
       );
-      console.log("team members: " + teamMembers);
       return createTeam(false);
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    });;
   } else if (action === "2 - Add an intern") {
     return inquirer.prompt(questions("intern")).then((internInput) => {
       teamMembers.push(
@@ -68,29 +69,32 @@ function menuHandler(action) {
           internInput.school
         )
       );
-      console.log("team members: " + teamMembers);
       return createTeam(false);
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    });;
   } else if (action === "3 - Finish building my team") {
-    console.log("team members: " + teamMembers);
     buildTemplate(teamMembers);
     return;
   }
 }
 
-function buildTemplate(teamMembers) {
+const buildTemplate = (teamMembers) => {
   return new Promise((resolve, reject) => {
-    console.log("build template - team members: " + teamMembers);
-    generateTemplate(teamMembers)
+    resolve(generateTemplate(teamMembers));
+    return;
+  }).then((htmlTemplate) => {
+    writeToFile(htmlTemplate);
+    return;
   })
-    .then((htmlTemplate) => {
-      return writeToFile(htmlTemplate);
-    }).catch((err) => {
+  .catch((err) => {
       console.log(err);
     });
   };
 
-function writeToFile(htmlFile) {
+const writeToFile = (htmlFile) => {
+  console.log("write to file started");
   return new Promise((resolve, reject) => {
     fs.writeFile("./dist/my-team.html", htmlFile, (err) => {
       if (err) {
@@ -105,5 +109,4 @@ function writeToFile(htmlFile) {
   });
 }
 
-console.log("team members: " + teamMembers);
 createTeam(true);
