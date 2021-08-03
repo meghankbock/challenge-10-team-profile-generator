@@ -22,7 +22,7 @@ const managerPrompt = () => {
       .then((managerInput) => {
         teamMembers.push(
           new Manager(
-            managerInput.name,
+            managerInput.name.toUpperCase(),
             managerInput.id,
             managerInput.email,
             managerInput.officeNumber
@@ -48,7 +48,7 @@ const menuHandler = (action) => {
     return inquirer.prompt(questions("engineer")).then((engineerInput) => {
       teamMembers.push(
         new Engineer(
-          engineerInput.name,
+          engineerInput.name.toUpperCase(),
           engineerInput.id,
           engineerInput.email,
           engineerInput.github
@@ -63,10 +63,10 @@ const menuHandler = (action) => {
     return inquirer.prompt(questions("intern")).then((internInput) => {
       teamMembers.push(
         new Intern(
-          internInput.name,
+          internInput.name.toUpperCase(),
           internInput.id,
           internInput.email,
-          internInput.school
+          internInput.school.toUpperCase()
         )
       );
       return createTeam(false);
@@ -103,9 +103,20 @@ const writeToFile = (htmlFile) => {
       }
       resolve({
         ok: true,
-        message: "File created!",
+        message: "HTML File created!",
       });
     });
+
+    fs.copyFile("./src/style.css", "./dist/style.css", (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve({
+        ok: true,
+        message: "CSS File created!",
+      });
+    })
   });
 }
 

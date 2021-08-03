@@ -13,19 +13,42 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Team Profile Generator</title>
   </head>
 
   <body>
-    <h1>My Team</h1>
-    <section id=team-members class="row d-flex justify-content-center"><div class="card text-white m-3 p-0 col-3" style="max-width: 20rem;">
-            <div id="name" class="card-title mb-0 p-3 bg-primary"><h5>m</h5>
-            <span id="role">Manager</span>
+    <section class="team-header"><h1>My Team</h1></section>
+    <section id="team-members" class="row d-flex justify-content-center"><div class="card text-white m-3 p-0 col-3" style="max-width: 20rem;">
+            <div id="name" class="card-title mb-0 p-3 bg-primary"><h5>TEST MANAGER</h5>
+            <span class="material-icons">groups</span><span id="role"> Manager</span>
             </div>
             <div class="card-body mb-0 p-3 bg-light border-light">
-              <p id="id" class="card-text mb-0 p-2 bg-white border-light text-dark">ID: m</p>
-              <p id="email" class="card-text mb-0 p-2 bg-white border-light text-dark">Email: <a href="mailto:m">m</a></p>
-              <p id="other" class="card-text mb-0 p-2 bg-white border-light text-dark">Office Number: m</p>
+              <div class="card-border"><p id="id" class="card-text mb-0 p-2 bg-white text-dark">ID: 1234</p></div>
+              <div class="card-border"><p id="email" class="card-text mb-0 p-2 bg-white text-dark">Email: <a href="mailto:manager@test.com">manager@test.com</a></p></div>
+              <div class="card-border"><p id="other" class="card-text mb-0 p-2 bg-white text-dark">Office Number: 555-555-5555</p></div>
+            </div>
+          </div><div class="card text-white m-3 p-0 col-3" style="max-width: 20rem;">
+            <div id="name" class="card-title mb-0 p-3 bg-primary"><h5>TEST ENGINEER</h5>
+            <span class="material-icons">code</span><span id="role"> Engineer</span>
+            </div>
+            <div class="card-body mb-0 p-3 bg-light border-light">
+              <div class="card-border"><p id="id" class="card-text mb-0 p-2 bg-white text-dark">ID: 2345</p></div>
+              <div class="card-border"><p id="email" class="card-text mb-0 p-2 bg-white text-dark">Email: <a href="mailto:engineer@test.com">engineer@test.com</a></p></div>
+              <div class="card-border"><p id="other" class="card-text mb-0 p-2 bg-white text-dark">Github: <a href="https://github.com/engineer">engineer</a></p></div>
+            </div>
+          </div><div class="card text-white m-3 p-0 col-3" style="max-width: 20rem;">
+            <div id="name" class="card-title mb-0 p-3 bg-primary"><h5>TEST INTERN</h5>
+            <span class="material-icons">school</span><span id="role"> Intern</span>
+            </div>
+            <div class="card-body mb-0 p-3 bg-light border-light">
+              <div class="card-border"><p id="id" class="card-text mb-0 p-2 bg-white text-dark">ID: 3456</p></div>
+              <div class="card-border"><p id="email" class="card-text mb-0 p-2 bg-white text-dark">Email: <a href="mailto:intern@test.com">intern@test.com</a></p></div>
+              <div class="card-border"><p id="other" class="card-text mb-0 p-2 bg-white text-dark">School: TEST SCHOOL</p></div>
             </div>
           </div></section>
   </body>
