@@ -94,7 +94,6 @@ const buildTemplate = (teamMembers) => {
   };
 
 const writeToFile = (htmlFile) => {
-  console.log("write to file started");
   return new Promise((resolve, reject) => {
     fs.writeFile("./dist/my-team.html", htmlFile, (err) => {
       if (err) {
